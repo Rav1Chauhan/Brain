@@ -8,10 +8,11 @@ import { useNavigate } from "react-router-dom";
 export function Signup() {
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
+
   async function signup() {
     const username = usernameRef.current?.value;
     const password = passwordRef.current?.value;
-    const navigate = useNavigate();
     try {
       const response = await axios.post(`${BACKEND_URL}/api/v1/user/signup`, {
         username,
@@ -19,21 +20,44 @@ export function Signup() {
       });
 
       console.log(response.data);
+      navigate("/Signin");
     } catch (err) {
       console.error(err);
     }
-    navigate("/Signin");
   }
 
   return (
-    <div className="h-screen w-screen bg-gray-200 flex justify-center items-center">
-      <div className="bg-white rounded-xl border min-w-48 p-8">
-        <Input ref={usernameRef} placeholder="Username" />
-        <Input ref={passwordRef} placeholder="Password" />
-        <div className="flex justify-center pt-2">
+    <div className="h-screen w-screen bg-linear-to-br from-indigo-100 via-purple-50 to-pink-100 flex justify-center items-center">
+      <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-white/20 min-w-95 p-8 flex flex-col gap-5">
+        <div className="text-center space-y-1 mb-2">
+          <h2 className="text-2xl font-bold tracking-tight text-gray-900">
+            Create an Account
+          </h2>
+          <p className="text-sm text-gray-500">
+            Enter your details to get started
+          </p>
+        </div>
+
+        <div className="space-y-4">
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              Username
+            </label>
+            <Input ref={usernameRef} placeholder="Enter your username" />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              Password
+            </label>
+            <Input ref={passwordRef} placeholder="Enter your password" />
+          </div>
+        </div>
+
+        <div className="pt-2">
           <Button
             variant={"secondary"}
-            text="Signup"
+            text="Sign Up"
             fullWidth={true}
             onClick={signup}
           />
